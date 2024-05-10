@@ -1,26 +1,32 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
         }
     }
-    
+
+    val frameworkName = "shared"
+    val xcf = XCFramework(frameworkName)
     listOf(
-        iosX64(),
-        iosArm64(),
+//        iosX64(),
+//        iosArm64(),
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "shared"
-            isStatic = true
+            binaryOption("bundleId", "io.github.ryunen344.droidkaigies.shared")
+            baseName = frameworkName
+            isStatic = false
+            xcf.add(this)
         }
     }
 
@@ -53,7 +59,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.ryunen344.droidkaigies"
+    namespace = "io.github.ryunen344.droidkaigies.shared"
     compileSdk = 34
     defaultConfig {
         minSdk = 23

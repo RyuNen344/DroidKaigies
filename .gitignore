@@ -40,5 +40,6 @@ xcuserdata
 bin/
 gen/
 out/
+.kotlin/
 .gradle/
 build/
