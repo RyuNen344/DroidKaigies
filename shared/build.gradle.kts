@@ -22,7 +22,6 @@ kotlin {
 
     val frameworkName = "shared"
     val xcf = XCFramework(frameworkName)
-    val iosXcfDir = rootProject.layout.projectDirectory.dir("iosApp/Framework/$frameworkName.xcframework").asFile
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -35,29 +34,25 @@ kotlin {
         }
     }
 
-    tasks.getByName<XCFrameworkTask>("assembleSharedDebugXCFramework") {
+    val copyToIosDir: XCFrameworkTask.() -> Unit = {
+        val iosXcfDir = rootProject.layout.projectDirectory.dir("iosApp/Framework/$frameworkName.xcframework").asFile
+        val spec: CopySpec.() -> Unit = {
+            from(outputs.files.first())
+            into(iosXcfDir)
+        }
         doFirst {
             fileTree(iosXcfDir) { exclude(".gitkeep") }.forEach(File::delete)
         }
+        val copyWork = copy(spec)
         doLast {
-            copy {
-                from(outputs.files.first())
-                into(iosXcfDir)
+            if (!copyWork.didWork) {
+                copy(spec)
             }
         }
     }
 
-    tasks.getByName<XCFrameworkTask>("assembleSharedReleaseXCFramework") {
-        doFirst {
-            fileTree(iosXcfDir) { exclude(".gitkeep") }.forEach(File::delete)
-        }
-        doLast {
-            copy {
-                from(outputs.files.first())
-                into(iosXcfDir)
-            }
-        }
-    }
+    tasks.getByName<XCFrameworkTask>("assembleSharedDebugXCFramework", copyToIosDir)
+    tasks.getByName<XCFrameworkTask>("assembleSharedReleaseXCFramework", copyToIosDir)
 
     sourceSets {
         all {
