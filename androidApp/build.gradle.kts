@@ -1,13 +1,18 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.compose.compiler)
+}
+
+composeCompiler {
+    version = libs.versions.compose.compiler.get()
 }
 
 android {
     namespace = "io.github.ryunen344.droidkaigies.android"
     compileSdk = 34
     defaultConfig {
-        applicationId = "io.github.ryunen344.droidkaigies.android"
+//        applicationId = "io.github.ryunen344.droidkaigies.android"
         minSdk = 23
         targetSdk = 34
         versionCode = 1
@@ -15,9 +20,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     packaging {
         resources {

@@ -1,3 +1,4 @@
+import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
@@ -6,6 +7,10 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+}
+
+composeCompiler {
+    version = libs.versions.compose.compiler.get()
 }
 
 kotlin {
@@ -54,6 +59,10 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.compose.ui.tooling.preview)
         }
     }
 }
