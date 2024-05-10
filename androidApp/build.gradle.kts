@@ -12,7 +12,6 @@ android {
     namespace = "io.github.ryunen344.droidkaigies.android"
     compileSdk = 34
     defaultConfig {
-//        applicationId = "io.github.ryunen344.droidkaigies.android"
         minSdk = 23
         targetSdk = 34
         versionCode = 1
