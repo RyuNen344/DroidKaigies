@@ -43,3 +43,6 @@ out/
 .kotlin/
 .gradle/
 build/
+
+iosApp/Framework/shared.xcframework/Info.plist
+iosApp/Framework/shared.xcframework/ios-*

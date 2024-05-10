@@ -1,6 +1,6 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkTask
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -22,9 +22,9 @@ kotlin {
 
     val frameworkName = "shared"
     val xcf = XCFramework(frameworkName)
+    val iosXcfDir = rootProject.layout.projectDirectory.dir("iosApp/Framework/$frameworkName.xcframework").asFile
     listOf(
-//        iosX64(),
-//        iosArm64(),
+        iosArm64(),
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
@@ -32,6 +32,30 @@ kotlin {
             baseName = frameworkName
             isStatic = false
             xcf.add(this)
+        }
+    }
+
+    tasks.getByName<XCFrameworkTask>("assembleSharedDebugXCFramework") {
+        doFirst {
+            fileTree(iosXcfDir) { exclude(".gitkeep") }.forEach(File::delete)
+        }
+        doLast {
+            copy {
+                from(outputs.files.first())
+                into(iosXcfDir)
+            }
+        }
+    }
+
+    tasks.getByName<XCFrameworkTask>("assembleSharedReleaseXCFramework") {
+        doFirst {
+            fileTree(iosXcfDir) { exclude(".gitkeep") }.forEach(File::delete)
+        }
+        doLast {
+            copy {
+                from(outputs.files.first())
+                into(iosXcfDir)
+            }
         }
     }
 
