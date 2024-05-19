@@ -4,10 +4,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
-composeCompiler {
-    version = libs.versions.compose.compiler.get()
-}
-
 android {
     namespace = "io.github.ryunen344.droidkaigies.android"
     compileSdk = 34
@@ -16,9 +12,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
-    }
-    buildFeatures {
-        compose = true
     }
     packaging {
         resources {
@@ -33,9 +26,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 }
 

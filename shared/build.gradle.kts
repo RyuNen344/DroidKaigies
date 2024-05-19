@@ -9,10 +9,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
-composeCompiler {
-    version = libs.versions.compose.compiler.get()
-}
-
 kotlin {
     androidTarget {
         compilerOptions {
